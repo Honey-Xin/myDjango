@@ -16,9 +16,9 @@ class auThor(models.Model):
 class arTicle(models.Model):
     # arTicle_id = models.AutoField(primary_key=True,unique=True,verbose_name='剧本ID')
     # arTicle_id = models.IntegerField('剧本ID',max_length=11,null=False)
-    arTicle_name = models.CharField('剧本名',max_length= 255)
-    arTicle_theme = models.CharField('剧本主题',max_length=255)
+    arTicle_name = models.CharField('剧本名',max_length= 255,null=True)
+    arTicle_theme = models.CharField('剧本主题',max_length=255,null=True)
     arTicle_content = models.CharField('剧本内容',max_length=10000,null=False)
-    arTicle_score = models.IntegerField('剧本得分',max_length=11)
+    arTicle_score = models.IntegerField('剧本得分',max_length=11,null=True)
 
     arTicle_auThor_id = models.ForeignKey(to=auThor,on_delete=models.CASCADE,null=True) # 关联

@@ -25,5 +25,5 @@ urlpatterns = [
     path('registered',RegisterView.as_view(),name='registered'),
     path('logined',LoginView.as_view(),name='logined'),
     path('test',to,name='to'),
-    # path('my',)
+    path('my',DoModifyView.as_view, name='文件处理')
 ]

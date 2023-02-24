@@ -57,5 +57,24 @@ class RegisterView(View):
 
 from app.cope import goON
 #处理模块
-def DoModify(request):
+class DoModifyView(View):
     pass
+    def get(self, request):
+        pass
+        # return render(request, 'test.html')
+
+    def post(self, request):
+        paper_input = request.POST.get("paper-input")
+        paper_name = request.POST.get("paper-name")
+        paper_thame = request.POST.get("paper-thame")
+
+
+        # 注册成功跳转到到登录页面，注册加判断已经存在提示改用用户已存在
+        try:
+            pass
+            # User.objects.create()
+        except Exception as e:
+            print(e)
+            return HttpResponse("注册失败")
+        return redirect('test')
+
