@@ -1,0 +1,138 @@
+{% extends 'base.html'%}
+{% load static %}
+{%block head%}
+    <title>论文语法纠错系统</title>
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+ <style>
+        body {
+            background-color: #f2f2f2;
+        }
+        .error {
+            color: red;
+        }
+        .bold {
+            font-weight: bold;
+        }
+    </style>
+{%endblock head%}
+{%block body%}
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-8 column">
+                <h2>输入论文</h2>
+                <form id="paper-form">
+                    <div class="form-group">
+                        <textarea class="form-control" id="paper-input" rows="26"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </form>
+            </div>
+            <div class="col-md-2 colum">
+                <h2>语法纠错</h2>
+                <ul id="error-list"></ul>
+            </div>
+
+
+            <div class="col-md-2 column">
+                <h2>论文得分</h2>
+                <div class="form-group">
+                    <label for="paper-type">论文类型:</label>
+                    <select class="form-control" id="paper-type">
+                        <option value="1">学术论文</option>
+                        <option value="2">科技报告</option>
+                        <option value="3">新闻报道</option>
+                    </select>
+                </div>
+                <h4>得分: <span id="paper-score"></span></h4>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#paper-form').submit(function(event) {
+                event.preventDefault();
+                var paperInput = $('#paper-input').val();
+                if (paperInput === '') {
+                    alert('请输入论文内容');
+                } else {
+                    $.ajax({
+                        url: '/my',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: JSON.stringify({text: paperInput}),
+                        success: function(data) {
+                            displayErrors(data);
+                            calculateScore();
+                        },
+                        error: function(xhr, status, error) {
+                            alert('发生错误：' + error);
+                        }
+                    });
+                }
+            });
+
+            function displayErrors(data) {
+                $('#error-list').empty();
+                if (data.matches.length > 0) {
+                    $.each(data.matches, function(index, value) {
+                        var li = '<li class="error">' + value.message + ' <a href="#" class="error-link" data-offset="' + value.offset + '">' + value.context.text + '</a></li>';
+                        $('#error-list').append(li);
+                    });
+                }
+                // Add event listener to error links
+                $('.error-link').click(function(event) {
+                    event.preventDefault();
+                    var offset = $(this).data('offset');
+                    $('#paper-input').selectRange(offset, offset + $(this).text().length);
+                    $('#paper-input').addClass('bold');
+                });
+            }
+
+            function calculateScore() {
+                var paperType = $('#paper-type').val();
+                var paperInput = $('#paper-input').val();
+                var score = 0;
+                switch (paperType) {
+                    case '1':
+                        // Calculate score for academic paper
+                        score = paperInput.length / 100;
+                        break;
+                    case '2':
+                        // Calculate score for technical report
+                        score = paperInput.length / 200;
+                        break;
+                    case '3':
+                        // Calculate score for news report
+                        score = paperInput.length / 300;
+                        break;
+                }
+                $('#paper-score').text(score.toFixed(2));
+            }
+
+            // Add event listener to paper type selector
+            $('#paper-type').change(function() {
+                calculateScore();
+            });
+
+            // Add selectRange function to jQuery
+            $.fn.selectRange = function(start, end) {
+                return this.each(function() {
+                    if (this.setSelectionRange) {
+                        this.focus();
+                        this.setSelectionRange(start, end);
+                    } else if (this.createTextRange) {
+                        var range = this.createTextRange();
+                        range.collapse(true);
+                        range.moveEnd('character', end);
+                        range.moveStart('character', start);
+                        range.select();
+                    }
+                });
+            };
+        });
+    </script>
+{%endblock body%}
