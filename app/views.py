@@ -58,4 +58,4 @@ class RegisterView(View):
 from app.cope import goON
 #处理模块
 def DoModify(request):
-    goON.
+    pass
