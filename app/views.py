@@ -67,6 +67,7 @@ class DoModifyView(View):
         paper_input = request.POST.get("paper-input")
         paper_name = request.POST.get("paper-name")
         paper_thame = request.POST.get("paper-thame")
+        # gjhgjgkj
 
 
         # 注册成功跳转到到登录页面，注册加判断已经存在提示改用用户已存在
