@@ -4,7 +4,8 @@
     <title>论文语法纠错系统</title>
 <!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
 <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
-    <script type="text/javascript" src="{% static 'js/jquery-1.11.3.js' %}" ></script>
+<!--    <script type="text/javascript" src="{% static 'js/jquery-1.11.3.js' %}" ></script>-->
+    <script type="text/javascript" src="{% static 'jquery.cookie.js' %}" ></script>
     <script type="text/javascript" src="{% static 'popper.min.js' %}" ></script>
 <!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
  <style>
@@ -24,18 +25,17 @@
         <div class="row clearfix">
             <div class="col-md-8 column">
                 <h2>输入论文</h2>
-                <form id="paper-form">
-                    <div class="form-group">
-                        <div>
-                            <input type="text" id="paper-name" class="col-md-5 column" placeholder="题目">
-
-                            <input type="text" id="paper-thame" class="col-md-5 column col-md-offset-2" placeholder="题材">
-                        </div>
-                        <textarea class="form-control" id="paper-input" rows="26"></textarea>
+                <div class="form-group">
+                    <div>
+                        <input type="text" id="paper-name" class="col-md-5 column" placeholder="题目">
+                        <input type="text" id="paper-theme" class="col-md-5 column col-md-offset-2" placeholder="题材">
                     </div>
-                    <button type="submit" class="btn btn-primary">提交</button>
-                </form>
+                    <textarea  class="form-control" id="paper-input" rows="26"></textarea>
+                </div>
+                <button type="button" id="paper-submit" class="btn btn-primary">提交</button>
             </div>
+
+
             <div class="col-md-2 colum">
                 <h2>语法纠错</h2>
                 <ul id="error-list"></ul>
@@ -58,9 +58,11 @@
     </div>
     <script>
         $(document).ready(function() {
-            $('#paper-form').submit(function(event) {
+            $('#paper-submit').click(function(event) {
                 event.preventDefault();
                 var paperInput = $('#paper-input').val();
+                var paperName = $('#paper-name').val();
+                var paperTheme = $('#paper-theme').val();
                 if (paperInput === '') {
                     alert('请输入论文内容');
                 } else {
@@ -68,10 +70,11 @@
                         url: '/my',
                         type: 'POST',
                         dataType: 'json',
-                        data: JSON.stringify({text: paperInput}),
+                        data: JSON.stringify({text: paperInput, name:paperName, theme:paperTheme}),
+                        headers:{"X-CSRFToken":$.cookie("csrftoken")},
                         success: function(data) {
-                            displayErrors(data);
-                            calculateScore();
+                        displayErrors(data);
+                        calculateScore();
                         },
                         error: function(xhr, status, error) {
                             alert('发生错误：' + error);

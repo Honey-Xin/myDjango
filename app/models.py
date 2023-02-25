@@ -20,5 +20,4 @@ class arTicle(models.Model):
     arTicle_theme = models.CharField('剧本主题',max_length=255,null=True)
     arTicle_content = models.CharField('剧本内容',max_length=10000,null=False)
     arTicle_score = models.IntegerField('剧本得分',max_length=11,null=True)
-
     arTicle_auThor_id = models.ForeignKey(to=auThor,on_delete=models.CASCADE,null=True) # 关联

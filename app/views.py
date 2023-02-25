@@ -33,7 +33,7 @@ class LoginView(View):
         if lpasswd != user.password:
             return HttpResponse("用户名和密码不匹配")
 
-        return render(request,'main.html',{"username":user})
+        return render(request,'test.html',{"username":user})
 
 class RegisterView(View):
     def get(self,request):
@@ -57,25 +57,26 @@ class RegisterView(View):
 
 from app.cope import goON
 #处理模块
-class DoModifyView(View):
-    pass
-    def get(self, request):
-        pass
-        # return render(request, 'test.html')
+# class DoModifyView(View):
+#     def get(self, request):
+#         return HttpResponse("当前是get方法")
+#         # return render(request, 'test.html')
 
-    def post(self, request):
-        paper_input = request.POST.get("paper-input")
-        paper_name = request.POST.get("paper-name")
-        paper_thame = request.POST.get("paper-thame")
-        # gjhgjgkj
-
-
-        # 注册成功跳转到到登录页面，注册加判断已经存在提示改用用户已存在
-        try:
-            pass
-            # User.objects.create()
-        except Exception as e:
-            print(e)
-            return HttpResponse("注册失败")
-        return redirect('test')
+def Dom(request):
+    name = request.POST.get("name")
+    text = request.POST.get("text")
+    theme = request.POST.get("theme")
+    # 处理内容,先存在数据库
+    try:
+        user = User.objects.get('id')
+        arTicle.objects.create(arTicle_name=name,
+                              arTicle_theme=theme,
+                              arTicle_content=text,
+                              arTicle_score=0,
+                              arTicle_auThor_id=user)
+        return HttpResponse("上传成功")
+    except Exception as e:
+        print(e)
+        return HttpResponse("添加失败")
+    return HttpResponse("测试")
 
