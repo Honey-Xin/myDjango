@@ -10,7 +10,7 @@ class auThor(models.Model):
     auThor_birthy = models.CharField('出生年月',max_length=255,null=True)
     auThor_phone = models.IntegerField('联系方式',max_length=11,null=True)
 
-    user = models.ForeignKey(to=User,on_delete=models.CASCADE,null=True)
+    user = models.ForeignKey(to=User,on_delete=models.CASCADE,to_field="id",null=False)
 
 
 class arTicle(models.Model):
@@ -20,4 +20,4 @@ class arTicle(models.Model):
     arTicle_theme = models.CharField('剧本主题',max_length=255,null=True)
     arTicle_content = models.CharField('剧本内容',max_length=10000,null=False)
     arTicle_score = models.IntegerField('剧本得分',max_length=11,null=True)
-    arTicle_auThor_id = models.ForeignKey(to=auThor,on_delete=models.CASCADE,null=True) # 关联
+    arTicle_auThor_id = models.ForeignKey(to=User,on_delete=models.CASCADE,to_field="id",null=False,) # 关联

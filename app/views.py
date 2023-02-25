@@ -68,13 +68,14 @@ def Dom(request):
     theme = request.POST.get("theme")
     # 处理内容,先存在数据库
     try:
-        user = User.objects.get('id')
-        arTicle.objects.create(arTicle_name=name,
-                              arTicle_theme=theme,
-                              arTicle_content=text,
-                              arTicle_score=0,
-                              arTicle_auThor_id=user)
-        return HttpResponse("上传成功")
+        user = User.objects.get(username="1355885920@qq.com")
+        # arTicle.objects.create(arTicle_name=name,
+        #                       arTicle_theme=theme,
+        #                       arTicle_content=text,
+        #                       arTicle_score=0,
+        #                       arTicle_auThor_id=user)
+
+        return HttpResponse(1234567890987654)
     except Exception as e:
         print(e)
         return HttpResponse("添加失败")

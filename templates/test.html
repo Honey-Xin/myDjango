@@ -5,8 +5,6 @@
 <!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
 <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
 <!--    <script type="text/javascript" src="{% static 'js/jquery-1.11.3.js' %}" ></script>-->
-    <script type="text/javascript" src="{% static 'jquery.cookie.js' %}" ></script>
-    <script type="text/javascript" src="{% static 'popper.min.js' %}" ></script>
 <!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
  <style>
         body {
@@ -70,9 +68,10 @@
                         url: '/my',
                         type: 'POST',
                         dataType: 'json',
-                        data: JSON.stringify({text: paperInput, name:paperName, theme:paperTheme}),
+                        data: {text: paperInput, name:paperName, theme:paperTheme},
                         headers:{"X-CSRFToken":$.cookie("csrftoken")},
                         success: function(data) {
+                        console.log(data);
                         displayErrors(data);
                         calculateScore();
                         },
@@ -85,6 +84,7 @@
 
             function displayErrors(data) {
                 $('#error-list').empty();
+                console.log("fghdfdgh:"+data);
                 if (data.matches.length > 0) {
                     $.each(data.matches, function(index, value) {
                         var li = '<li class="error">' + value.message + ' <a href="#" class="error-link" data-offset="' + value.offset + '">' + value.context.text + '</a></li>';
