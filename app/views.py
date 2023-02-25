@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect
+from django.http import JsonResponse
 from django.views import View
 from django.contrib.auth.models import User
 from app.models import *
@@ -75,7 +76,51 @@ def Dom(request):
         #                       arTicle_score=0,
         #                       arTicle_auThor_id=user)
 
-        return HttpResponse(1234567890987654)
+        data = {"matches":[
+            {
+                "message": "This sentence does not start with an uppercase letter",
+                "short_message": "Uppercase",
+                "offset": 45,
+                "length": 8,
+                "context": {
+                    "text": "word is wrong. this is a sentence. ",
+                    "offset": 39
+                },
+                "replacements": [
+                    "Word"
+                ],
+            },
+            {
+                "message": "This sentence does not start with an uppercase letter",
+                "short_message": "Uppercase",
+                "offset": 45,
+                "length": 8,
+                "context": {
+                    "text": "word is wrong. this is a sentence. ",
+                    "offset": 39
+                },
+                "replacements": [
+                    "Word"
+                ],
+},
+            {
+                "message": "This sentence does not start with an uppercase letter",
+                "short_message": "Uppercase",
+                "offset": 45,
+                "length": 8,
+                "context": {
+                    "text": "word is wrong. this is a sentence. ",
+                    "offset": 39
+                },
+                "replacements": [
+                    "Word"
+                ],
+            },
+        ]
+}
+
+
+        return JsonResponse(data)
     except Exception as e:
         print(e)
         return HttpResponse("添加失败")

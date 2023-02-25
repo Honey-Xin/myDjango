@@ -71,7 +71,7 @@
                         data: {text: paperInput, name:paperName, theme:paperTheme},
                         headers:{"X-CSRFToken":$.cookie("csrftoken")},
                         success: function(data) {
-                        console.log(data);
+                        console.log("sdfasfdas"+data.matches.length);
                         displayErrors(data);
                         calculateScore();
                         },
@@ -84,7 +84,6 @@
 
             function displayErrors(data) {
                 $('#error-list').empty();
-                console.log("fghdfdgh:"+data);
                 if (data.matches.length > 0) {
                     $.each(data.matches, function(index, value) {
                         var li = '<li class="error">' + value.message + ' <a href="#" class="error-link" data-offset="' + value.offset + '">' + value.context.text + '</a></li>';
