@@ -74,49 +74,22 @@ def Dom(request):
 
         goON.texts.append(text)
         result = goON.get_result()
-
-        data = {"matches":[
-            {
-                "message": "This sentence does not start with an uppercase letter",
+        data = {"matches": []}
+        for item in result[0][1]:
+            data_item = {
+                "message": item[0],
                 "short_message": "Uppercase",
                 "offset": 45,
-                "length": 8,
+                "length": len(item[1]),
                 "context": {
-                    "text": result[0],
-                    "offset": 39
+                    "text": item[1],
+                    "offset": item[2]
                 },
                 "replacements": [
                     "Word"
                 ],
-            },
-            {
-                "message": "This sentence does not start with an uppercase letter",
-                "short_message": "Uppercase",
-                "offset": 45,
-                "length": 8,
-                "context": {
-                    "text": "word is wrong. this is a sentence. ",
-                    "offset": 39
-                },
-                "replacements": [
-                    "Word"
-                ],
-},
-            {
-                "message": "This sentence does not start with an uppercase letter",
-                "short_message": "Uppercase",
-                "offset": 45,
-                "length": 8,
-                "context": {
-                    "text": "word is wrong. this is a sentence. ",
-                    "offset": 39
-                },
-                "replacements": [
-                    "Word"
-                ],
-            },
-        ]
-}
+            }
+            data["matches"].append(data_item)
 
         return JsonResponse(data)
     except Exception as e:
