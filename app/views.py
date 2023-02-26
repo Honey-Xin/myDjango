@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.views import View
 from django.contrib.auth.models import User
 from app.models import *
+from app.cope import *
 # Create your views here.
 
 
@@ -58,11 +59,6 @@ class RegisterView(View):
 
 from app.cope import goON
 #处理模块
-# class DoModifyView(View):
-#     def get(self, request):
-#         return HttpResponse("当前是get方法")
-#         # return render(request, 'test.html')
-
 def Dom(request):
     name = request.POST.get("name")
     text = request.POST.get("text")
@@ -76,6 +72,9 @@ def Dom(request):
         #                       arTicle_score=0,
         #                       arTicle_auThor_id=user)
 
+        goON.texts.append(text)
+        result = goON.get_result()
+
         data = {"matches":[
             {
                 "message": "This sentence does not start with an uppercase letter",
@@ -83,7 +82,7 @@ def Dom(request):
                 "offset": 45,
                 "length": 8,
                 "context": {
-                    "text": "word is wrong. this is a sentence. ",
+                    "text": result[0],
                     "offset": 39
                 },
                 "replacements": [
@@ -118,7 +117,6 @@ def Dom(request):
             },
         ]
 }
-
 
         return JsonResponse(data)
     except Exception as e:
