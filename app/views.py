@@ -71,25 +71,29 @@ def Dom(request):
         #                       arTicle_content=text,
         #                       arTicle_score=0,
         #                       arTicle_auThor_id=user)
-
-        goON.texts.append(text)
+        text = [i+'。' for i in text.split('。')]
+        goON.texts.extend(text)
         result = goON.get_result()
         data = {"matches": []}
-        for item in result[0][1]:
-            data_item = {
-                "message": item[0],
-                "short_message": "Uppercase",
-                "offset": 45,
-                "length": len(item[1]),
-                "context": {
-                    "text": item[1],
-                    "offset": item[2]
-                },
-                "replacements": [
-                    "Word"
-                ],
-            }
-            data["matches"].append(data_item)
+        pre_text_length = 0#前面句子的长度
+        for res in result:#返回的纠错信息
+            for item in res[1]:#纠错信息详情
+                #设置信息
+                data_item = {
+                    "message": item[0],#错误字段
+                    "short_message": "Uppercase",
+                    "offset":  pre_text_length+item[2],#错误位置
+                    "length": len(item[1])+4,#错误长度
+                    "context": {
+                        "text": item[1],#正确文字
+                        "offset": item[2]+4
+                    },
+                    "replacements": [
+                        item[1]#替换的文字
+                    ],
+                }
+                data["matches"].append(data_item)
+            pre_text_length += len(res[0])  # 前面句子的长度
 
         return JsonResponse(data)
     except Exception as e:

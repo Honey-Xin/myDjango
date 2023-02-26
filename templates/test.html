@@ -16,9 +16,16 @@
         .bold {
             font-weight: bold;
         }
+        #scrollable-div {
+              height: 500px;
+              overflow-y: scroll;
+        }
+
     </style>
 {%endblock head%}
 {%block body%}
+
+
     <div class="container">
         <div class="row clearfix">
             <div class="col-md-8 column">
@@ -33,12 +40,13 @@
                 <button type="button" id="paper-submit" class="btn btn-primary">提交</button>
             </div>
 
-
-            <div class="col-md-2 colum">
-                <h2>语法纠错</h2>
+            <h2>语法纠错</h2>
+            <div class="col-md-2 colum" id="scrollable-div">
                 <ul id="error-list"></ul>
             </div>
-
+            <script>
+                document.getElementById("scrollable-div").scrollTop += 500;
+            </script>
 
             <div class="col-md-2 column">
                 <h2>论文得分</h2>
@@ -93,9 +101,14 @@
                 // Add event listener to error links
                 $('.error-link').click(function(event) {
                     event.preventDefault();
+                    console.log(data);
+                    console.log( $(this).data);
                     var offset = $(this).data('offset');
+                    console.log("测试环节");
+                    console.log("打印步长"+offset);
+                    console.log("文本长度"+$(this).text().length)
                     $('#paper-input').selectRange(offset, offset + $(this).text().length);
-                    $('#paper-input').addClass('bold');
+<!--                    $('#paper-input').addClass('bold');-->
                 });
             }
 
