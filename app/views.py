@@ -94,7 +94,7 @@ def Dom(request):
                 }
                 data["matches"].append(data_item)
             pre_text_length += len(res[0])  # 前面句子的长度
-
+        goON.texts = []
         return JsonResponse(data)
     except Exception as e:
         print(e)
