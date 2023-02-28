@@ -19,3 +19,5 @@
 a = []
 a.extend(['asfdasdf',"jhghfghfh"])
 print(a)
+a = ''.join(a)
+print(a)

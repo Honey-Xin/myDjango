@@ -1,12 +1,12 @@
 {% extends 'base.html'%}
 {% load static %}
 {%block head%}
-    <title>论文语法纠错系统</title>
+<title>论文语法纠错系统</title>
 <!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
 <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
 <!--    <script type="text/javascript" src="{% static 'js/jquery-1.11.3.js' %}" ></script>-->
 <!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
- <style>
+<style>
         body {
             background-color: #f2f2f2;
         }
@@ -17,52 +17,76 @@
             font-weight: bold;
         }
         #scrollable-div {
-              height: 500px;
+              height: 450px;
               overflow-y: scroll;
         }
+        .error-text {
+            color: red;
+        }
+.bold strong {
+  font-weight: bold;
+}
 
-    </style>
+
+
+
+</style>
 {%endblock head%}
 {%block body%}
 
 
-    <div class="container">
-        <div class="row clearfix">
-            <div class="col-md-8 column">
-                <h2>输入论文</h2>
-                <div class="form-group">
-                    <div>
-                        <input type="text" id="paper-name" class="col-md-5 column" placeholder="题目">
-                        <input type="text" id="paper-theme" class="col-md-5 column col-md-offset-2" placeholder="题材">
-                    </div>
-                    <textarea  class="form-control" id="paper-input" rows="26"></textarea>
+<div class="container">
+    <div class="row clearfix">
+        <br>
+        <div class="col-md-5 column">
+            <h4>输入论文</h4>
+            <div class="form-group">
+                <div>
+                    <input type="text" id="paper-name" class="col-md-5 column" placeholder="题目">
+                    <input type="text" id="paper-theme" class="col-md-5 column col-md-offset-2" placeholder="题材">
                 </div>
-                <button type="button" id="paper-submit" class="btn btn-primary">提交</button>
+                <textarea class="form-control" id="paper-input" rows="19"></textarea>
             </div>
+            <button type="button" id="paper-submit" class="btn btn-primary">修改</button>
+        </div>
 
-            <h2>语法纠错</h2>
-            <div class="col-md-2 colum" id="scrollable-div">
-                <ul id="error-list"></ul>
-            </div>
-            <script>
-                document.getElementById("scrollable-div").scrollTop += 500;
-            </script>
 
-            <div class="col-md-2 column">
-                <h2>论文得分</h2>
-                <div class="form-group">
-                    <label for="paper-type">论文类型:</label>
-                    <select class="form-control" id="paper-type">
-                        <option value="1">学术论文</option>
-                        <option value="2">科技报告</option>
-                        <option value="3">新闻报道</option>
-                    </select>
-                </div>
-                <h4>得分: <span id="paper-score"></span></h4>
+
+        <div class="col-md-1 colum" id="scrollable-div">
+            <h4>纠错</h4>
+            <br>
+            <ul id="error-list"></ul>
+        </div>
+        <script>
+                document.getElementById("scrollable-div").scrollTop += 450;
+
+        </script>
+
+        <div class="col-md-5 column">
+            <h4>输出论文</h4>
+            <br>
+            <div class="form-group">
+                <!--div>
+                    <input type="text" id="paper-name-s" class="col-md-5 column" placeholder="题目">
+                    <input type="text" id="paper-theme-s" class="col-md-5 column col-md-offset-2" placeholder="题材">
+                </div>-->
+                <textarea class="form-control" id="paper-input-s" rows="19"></textarea>
             </div>
+            <button type="button" id="paper-submit-s" class="btn btn-primary">保存</button>
+            <!-- <h2>论文得分</h2>
+             <div class="form-group">
+                 <label for="paper-type">论文类型:</label>
+                 <select class="form-control" id="paper-type">
+                     <option value="1">学术论文</option>
+                     <option value="2">科技报告</option>
+                     <option value="3">新闻报道</option>
+                 </select>
+             </div>
+             <h4>得分: <span id="paper-score"></span></h4>-->
         </div>
     </div>
-    <script>
+</div>
+<script>
         $(document).ready(function() {
             $('#paper-submit').click(function(event) {
                 event.preventDefault();
@@ -79,6 +103,7 @@
                         data: {text: paperInput, name:paperName, theme:paperTheme},
                         headers:{"X-CSRFToken":$.cookie("csrftoken")},
                         success: function(data) {
+                        document.getElementById("paper-input-s").value = data.all
                         console.log("sdfasfdas"+data.matches.length);
                         displayErrors(data);
                         calculateScore();
@@ -90,6 +115,13 @@
                 }
             });
 
+            var activeInput = null;
+            $('#paper-input').focus(function() {
+                activeInput = $(this);
+            });
+            $('#paper-input-s').focus(function() {
+                activeInput = $(this);
+            });
             function displayErrors(data) {
                 $('#error-list').empty();
                 if (data.matches.length > 0) {
@@ -101,16 +133,38 @@
                 // Add event listener to error links
                 $('.error-link').click(function(event) {
                     event.preventDefault();
-                    console.log(data);
-                    console.log( $(this).data);
                     var offset = $(this).data('offset');
-                    console.log("测试环节");
-                    console.log("打印步长"+offset);
-                    console.log("文本长度"+$(this).text().length)
-                    $('#paper-input').selectRange(offset, offset + $(this).text().length);
-<!--                    $('#paper-input').addClass('bold');-->
+                    if (activeInput) {
+                        activeInput.selectRange(offset, offset + $(this).text().length);
+                        activeInput.addClass('bold');
+                    }
                 });
             }
+
+
+<!--            function displayErrors1(data) {-->
+<!--                $('#error-list').empty();-->
+<!--                if (data.matches.length > 0) {-->
+<!--                    $.each(data.matches, function(index, value) {-->
+<!--                        var li = '<li class="error">' + value.message + ' <a href="#" class="error-link" data-offset="' + value.offset + '">' + value.context.text + '</a></li>';-->
+<!--                        $('#error-list').append(li);-->
+<!--                    });-->
+<!--                }-->
+<!--                // Add event listener to error links-->
+<!--                $('.error-link').click(function(event) {-->
+<!--                event.preventDefault();-->
+<!--                var offset = $(this).data('offset');-->
+<!--                if (activeInput) {-->
+<!--                    var text = activeInput.val();-->
+<!--                    var start = offset;-->
+<!--                    var end = offset + $(this).text().length;-->
+<!--                    var before = text.substring(0, start);-->
+<!--                    var middle = '<span class="bold">' + text.substring(start, end) + '</span>';-->
+<!--                    var after = text.substring(end);-->
+<!--                    activeInput.val(before + middle + after);-->
+<!--                }-->
+<!--           }-->
+
 
             function calculateScore() {
                 var paperType = $('#paper-type').val();
@@ -154,5 +208,7 @@
                 });
             };
         });
-    </script>
+
+
+</script>
 {%endblock body%}

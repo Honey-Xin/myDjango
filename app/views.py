@@ -76,6 +76,7 @@ def Dom(request):
         result = goON.get_result()
         data = {"matches": []}
         pre_text_length = 0#前面句子的长度
+        paper = []
         for res in result:#返回的纠错信息
             for item in res[1]:#纠错信息详情
                 #设置信息
@@ -93,7 +94,10 @@ def Dom(request):
                     ],
                 }
                 data["matches"].append(data_item)
+            if res[0]!='。':
+                paper.extend(res[0])
             pre_text_length += len(res[0])  # 前面句子的长度
+        data['all'] = ''.join(paper)
         goON.texts = []
         return JsonResponse(data)
     except Exception as e:
