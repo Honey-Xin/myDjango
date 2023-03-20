@@ -15,9 +15,18 @@
 #         ],
 #     }
 #     data["matches"].append(data_item)
+#
+# a = []
+# a.extend(['asfdasdf',"jhghfghfh"])
+# print(a)
+# a = ''.join(a)
+# print(a)
 
-a = []
-a.extend(['asfdasdf',"jhghfghfh"])
-print(a)
-a = ''.join(a)
-print(a)
+class Person:
+    def __init__(self):
+        pass
+    def getAge(self):
+        print(__name__)
+
+p = Person()
+p.getAge()
