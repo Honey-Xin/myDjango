@@ -7,9 +7,9 @@ tokenizer = BertTokenizer.from_pretrained("shibing624/macbert4csc-base-chinese")
 model = BertForMaskedLM.from_pretrained("shibing624/macbert4csc-base-chinese")
 model.to(device)
 
-texts = ["我的名子事你的民字，你找到你最喜欢的工作，我也很高心。儿且先在我不想去共作，我只想休息一下。"]
+# texts = ["我的名子事你的民字，你找到你最喜欢的工作，我也很高心。儿且先在我不想去共作，我只想休息一下。"]
 
-# texts = []
+texts = []
 def to_torch():
     with torch.no_grad():
         outputs = model(**tokenizer(texts, padding=True, return_tensors='pt').to(device))

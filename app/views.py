@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views import View
 from django.contrib.auth.models import User
 from app.models import *
-from app.cope import *
+from app.cope import util
 # Create your views here.
 
 
@@ -104,4 +104,40 @@ def Dom(request):
         print(e)
         return HttpResponse("添加失败")
     return HttpResponse("测试")
+
+
+# 解析文件
+from django.conf import settings
+import time,os
+
+def upload(request):
+    if request.method == 'POST' and request.FILES['file']:
+        # 处理文件数据，如保存到服务器或进行其他操作
+        myfile = request.FILES.get('file', None)
+        try:
+            suffix = str(myfile.name.split('.')[-1])  # 文件后缀
+            times = str(time.time()).split('.').pop()  # 生成时间戳，取小数点后的值
+            fil = str(myfile.name.split('.')[0])  # 文件名
+            filename = times + '_' + fil + '.' + suffix  # 拼接文件名
+            filename_dir = settings.MEDIA_ROOT  # 文件保存路径
+            # 保存文件
+            with open(filename_dir + filename, 'wb+') as destination:
+                for chunk in myfile.chunks():
+                    destination.write(chunk)
+                destination.close()
+            # 解析文件
+            if suffix == 'docx':
+                text = util.get_docx_text(filename_dir + filename)
+            else:
+                text = util.get_pdf_text(filename_dir + filename)
+            data = {"textname":fil,
+                    "textcontent":text
+                    }
+        except:
+            return JsonResponse({'success': False, 'message': '上传失败'})
+
+        return JsonResponse(data)
+    else:
+        return JsonResponse({'success': False, 'message': '上传失败'})
+
 

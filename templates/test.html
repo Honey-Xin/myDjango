@@ -48,6 +48,35 @@
                 <textarea class="form-control" id="paper-input" rows="19"></textarea>
             </div>
             <button type="button" id="paper-submit" class="btn btn-primary">修改</button>
+<!--            上传文件-->
+            <form id="upload-form" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="file" name="file" id="file">
+              <button type="submit" id="submit-btn">解析</button>
+            </form>
+            <script>
+              $(document).ready(function() {
+                $('#upload-form').submit(function(e) {
+                  e.preventDefault();
+                  var form_data = new FormData($('#upload-form')[0]);
+                  $.ajax({
+                    type: 'POST',
+                    url: 'upload',
+                    data: form_data,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                      // 处理响应
+                      document.getElementById("paper-input").value = data.textcontent
+                      document.getElementById("paper-name").value = data.textname
+                    },
+                    error: function(xhr, status, error) {
+                            alert('发生错误：' + error);
+                    }
+                  });
+                });
+              });
+            </script>
         </div>
 
 
@@ -122,6 +151,7 @@
             $('#paper-input-s').focus(function() {
                 activeInput = $(this);
             });
+
             function displayErrors(data) {
                 $('#error-list').empty();
                 if (data.matches.length > 0) {
@@ -140,31 +170,6 @@
                     }
                 });
             }
-
-
-<!--            function displayErrors1(data) {-->
-<!--                $('#error-list').empty();-->
-<!--                if (data.matches.length > 0) {-->
-<!--                    $.each(data.matches, function(index, value) {-->
-<!--                        var li = '<li class="error">' + value.message + ' <a href="#" class="error-link" data-offset="' + value.offset + '">' + value.context.text + '</a></li>';-->
-<!--                        $('#error-list').append(li);-->
-<!--                    });-->
-<!--                }-->
-<!--                // Add event listener to error links-->
-<!--                $('.error-link').click(function(event) {-->
-<!--                event.preventDefault();-->
-<!--                var offset = $(this).data('offset');-->
-<!--                if (activeInput) {-->
-<!--                    var text = activeInput.val();-->
-<!--                    var start = offset;-->
-<!--                    var end = offset + $(this).text().length;-->
-<!--                    var before = text.substring(0, start);-->
-<!--                    var middle = '<span class="bold">' + text.substring(start, end) + '</span>';-->
-<!--                    var after = text.substring(end);-->
-<!--                    activeInput.val(before + middle + after);-->
-<!--                }-->
-<!--           }-->
-
 
             function calculateScore() {
                 var paperType = $('#paper-type').val();

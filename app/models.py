@@ -21,3 +21,7 @@ class arTicle(models.Model):
     arTicle_content = models.CharField('剧本内容',max_length=10000,null=False)
     arTicle_score = models.IntegerField('剧本得分',max_length=11,null=True)
     arTicle_auThor_id = models.ForeignKey(to=User,on_delete=models.CASCADE,to_field="id",null=False,) # 关联
+class MyFile(models.Model):
+    my_file = models.FileField(upload_to='upload/')
+
+
