@@ -81,6 +81,11 @@
 					<form action="registered" method="post" id="registerID">
 						{% csrf_token %}
 						<div class="form-group">
+    						<label for="usernameoremail">用户名 *</label>
+    						<input type="text" class="form-control" id="usernameoremail" name="name">
+    						<span class="pp hide">此项必须填写</span>
+  						</div>
+						<div class="form-group">
     						<label for="usernameoremail">电子邮箱 *</label>
     						<input type="text" class="form-control" id="usernameoremail" name="email">
     						<span class="pp hide">此项必须填写</span>
@@ -92,12 +97,12 @@
   						</div>
   						<div class="form-group">
     						<label for="password">再次输入密码 </label>
-    						<input type="password" class="form-control" id="password" name="pwd2">
+    						<input type="password" class="form-control" id="password1" name="pwd2">
   						</div>
   						<div class="form-group">
     						<label for="question">验证问题 *</label>
     						<p style="color: #CCCCCC; font-size: 14px;">请回答: <label id="answer" style="color: #CCCCCC; font-size: 14px;"></label> 等于几?</p>
-    						<input type="text" class="form-control" id="password">
+    						<input type="text" class="form-control" id="password_">
   							<span class="pp hide">此项必须填写</span>
   						</div>
   						<div class="checkbox">

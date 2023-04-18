@@ -89,8 +89,12 @@ nav {
 	border-color: #5B5B5B;
 }
 .c3 .form-control:focus {
-  border-color: #FFFFFF;
+  border-color: #fff
+  color:#fff
   outline: 0;
+}
+.c3 .form-control{
+ color:#fff
 }
 .c3 label{
 	color: #AFAFAF;
