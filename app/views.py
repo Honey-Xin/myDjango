@@ -5,7 +5,9 @@ from django.contrib.auth.models import User
 from app.models import *
 from app.cope import util
 # Create your views here.
-
+'''
+测试上传
+'''
 
 def get_index(request):
     return render(request,'index.html')
