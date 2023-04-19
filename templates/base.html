@@ -8,6 +8,7 @@
 		<link rel="stylesheet" href="{% static 'css/example.css' %}"/>
 		<link rel="stylesheet" href="{% static 'css/footer&cbl.css' %}" />
 		<link rel="stylesheet" href="{% static 'css/daohang.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/base.css' %}" />
 		<script type="text/javascript" src="{% static 'js/jquery-1.11.3.js' %}" ></script>
 		<script type="text/javascript" src="{% static 'js/bootstrap.js' %}" ></script>
 		<script type="text/javascript" src="{% static 'js/hp.js' %}" ></script>
@@ -110,10 +111,14 @@
 							</li>
 
 						</ul>
-						<ul class="zcdl nav navbar-nav pull-right">
-							<li><a href="#">{{username}}</a></li>
-<!--							<li><a href="register.html">注册</a></li>-->
-						</ul>
+							<li class="zcdl nav navbar-nav pull-right">
+								<div class="dropdown">
+									<a href="#" class="a1">{{username}}</a>
+									<div class="dropdown-content">
+										<a href="logout" class="aa1">退出登录</a>
+									</div>
+								</div>
+							</li>
 					</div>
 				</div>
 

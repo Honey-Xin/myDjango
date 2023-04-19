@@ -10,10 +10,19 @@ from app.cope import util
 '''
 
 def get_index(request):
+    '''
+    访问网站起始页
+    '''
     return render(request,'index.html')
 
 def to(request):
-    return render(request,'test.html')
+    '''
+    访问网站主页，判断session
+    '''
+    if 'username' in request.session:
+        username = request.session['username']
+        return render(request, 'test.html', {"username": username})
+    return render(request, 'login.html')
 
 # 类视图---登录模板
 class LoginView(View):
@@ -37,6 +46,8 @@ class LoginView(View):
         # 如果用户名对，就判断密码有没有输入正确
         if lpasswd != user.password:
             return HttpResponse("用户名和密码不匹配")
+        a = user.username
+        request.session['username'] = user.username
 
         return render(request,'test.html',{"username":user})
 
@@ -60,6 +71,14 @@ class RegisterView(View):
             print(e)
             return HttpResponse("注册失败")
         return redirect('logined')
+
+#退出登录
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+def logout_view(request):
+    logout(request)
+    request.session.clear()
+    return redirect('logined') # redirect到登录页面
 
 from app.cope import goON
 #处理模块
