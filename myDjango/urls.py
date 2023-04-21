@@ -26,5 +26,7 @@ urlpatterns = [
     path('logined',LoginView.as_view(),name='logined'),
     path('test',to,name='to'),
     path('my',Dom, name='文件处理'),
-    path('upload',upload,name='文件上传')
+    path('upload',upload,name='文件上传'),
+    path('info',user_info,name='info'),
+    path('upinfo',upInfo,name='upInfo')
 ]

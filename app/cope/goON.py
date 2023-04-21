@@ -6,7 +6,6 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 tokenizer = BertTokenizer.from_pretrained("shibing624/macbert4csc-base-chinese")
 model = BertForMaskedLM.from_pretrained("shibing624/macbert4csc-base-chinese")
 model.to(device)
-print(model)
 
 # texts = ["我的名子事你的民字，你找到你最喜欢的工作，我也很高心。儿且先在我不想去共作，我只想休息一下。"]
 

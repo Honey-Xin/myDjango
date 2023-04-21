@@ -1,3 +1,4 @@
+import requests
 from django.shortcuts import render, HttpResponse, redirect
 from django.http import JsonResponse
 from django.views import View
@@ -48,6 +49,7 @@ class LoginView(View):
             return HttpResponse("用户名和密码不匹配")
         a = user.username
         request.session['username'] = user.username
+        request.session['userid'] = user.id
 
         return render(request,'test.html',{"username":user})
 
@@ -59,6 +61,8 @@ class RegisterView(View):
         remail = request.POST.get("email")
         rpasswd = request.POST.get("pwd1")
         rname = request.POST.get('name')
+        if not (remail and rpasswd and rname):
+            return HttpResponse('信息未完善')
 
         # 注册成功跳转到到登录页面，注册加判断已经存在提示改用用户已存在
         users = User.objects.all()
@@ -66,7 +70,8 @@ class RegisterView(View):
             if rname == i.username:
                 return HttpResponse("用户已存在")
         try:
-            User.objects.create(username=rname, password=rpasswd,email=remail)
+            user = User.objects.create(username=rname, password=rpasswd,email=remail)
+            auThor.objects.create(user = user)
         except Exception as e:
             print(e)
             return HttpResponse("注册失败")
@@ -163,4 +168,25 @@ def upload(request):
     else:
         return JsonResponse({'success': False, 'message': '上传失败'})
 
-
+def user_info(request):
+    userid = request.session['userid']
+    # username = User.objects.get(pk=userid).
+    user = auThor.objects.filter(user_id=userid)
+    if not user.exists():
+        print("No matching records found.")
+    else:
+        author = user.first()
+    return render(request, 'info.html', {'username': request.session['username'],'author':author})
+def upInfo(request):
+    # name = request.POST.get('name')
+    sex = request.POST.get('sex')
+    phone = request.POST.get('phone')
+    style = request.POST.get('style')
+    info = request.POST.get('info')
+    borth = request.POST.get('borth')
+    author = auThor.objects.filter(user_id=request.session['userid'])
+    try:
+        author.update(sex=sex,phone=phone,style=style,info=info,birthy=borth)
+    except Exception as e:
+        return HttpResponse('保存失败')
+    return redirect('info')
