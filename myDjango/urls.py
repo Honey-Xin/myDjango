@@ -27,6 +27,8 @@ urlpatterns = [
     path('test',to,name='to'),
     path('my',Dom, name='文件处理'),
     path('upload',upload,name='文件上传'),
+    path('save',save,name='save'),
     path('info',user_info,name='info'),
-    path('upinfo',upInfo,name='upInfo')
+    path('upinfo',upInfo,name='upInfo'),
+    path('mydoc',myDoc,name='mydoc')
 ]

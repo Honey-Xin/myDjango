@@ -42,10 +42,10 @@
             <h4>输入论文</h4>
             <div class="form-group">
                 <div>
-                    <input type="text" id="paper-name" class="col-md-5 column" placeholder="题目">
-                    <input type="text" id="paper-theme" class="col-md-5 column col-md-offset-2" placeholder="题材">
+                    <input type="text" id="paper-name" class="col-md-5 column" name='title' placeholder="题目">
+                    <input type="text" id="paper-theme" class="col-md-5 column col-md-offset-2" name="theme" placeholder="题材">
                 </div>
-                <textarea class="form-control" id="paper-input" rows="19"></textarea>
+                <textarea class="form-control" id="paper-input" rows="19" name></textarea>
             </div>
             <button type="button" id="paper-submit" class="btn btn-primary">修改</button>
 <!--            上传文件-->
@@ -55,6 +55,7 @@
               <button type="submit" id="submit-btn">解析</button>
             </form>
             <script>
+            //上传文件
               $(document).ready(function() {
                 $('#upload-form').submit(function(e) {
                   e.preventDefault();
@@ -95,13 +96,39 @@
             <h4>输出论文</h4>
             <br>
             <div class="form-group">
-                <!--div>
-                    <input type="text" id="paper-name-s" class="col-md-5 column" placeholder="题目">
-                    <input type="text" id="paper-theme-s" class="col-md-5 column col-md-offset-2" placeholder="题材">
-                </div>-->
                 <textarea class="form-control" id="paper-input-s" rows="19"></textarea>
             </div>
             <button type="button" id="paper-submit-s" class="btn btn-primary">保存</button>
+            <script>
+                $('#paper-submit-s').click(function(event) {
+                event.preventDefault();
+                var paperInput = $('#paper-input').val();
+                var paperOutput = $('#paper-input-s').val()
+                var paperName = $('#paper-name').val()
+                var paperTheme = $('#paper-theme').val()
+                if (paperOutput === '') {
+                    alert('请输入论文内容');
+                } else {
+                    $.ajax({
+                        url: '/save',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {text1: paperInput, text2:paperOutput, name:paperName, theme:paperTheme},
+                        headers:{"X-CSRFToken":$.cookie("csrftoken")},
+                        success: function(data) {
+                        document.getElementById("paper-input").value = data.text1//纠错数据放入文档
+                        document.getElementById("paper-input-s").value = data.text1//纠错数据放入文档
+                        alter('保存成功')
+                        },
+                        error: function(xhr, status, error) {
+                            alert('发生错误：' + error);
+                        }
+                    });
+                }
+            });
+
+
+            </script>
             <!-- <h2>论文得分</h2>
              <div class="form-group">
                  <label for="paper-type">论文类型:</label>
@@ -116,6 +143,7 @@
     </div>
 </div>
 <script>
+//提交文稿
         $(document).ready(function() {
             $('#paper-submit').click(function(event) {
                 event.preventDefault();
@@ -132,7 +160,7 @@
                         data: {text: paperInput, name:paperName, theme:paperTheme},
                         headers:{"X-CSRFToken":$.cookie("csrftoken")},
                         success: function(data) {
-                        document.getElementById("paper-input-s").value = data.all
+                        document.getElementById("paper-input-s").value = data.all//纠错数据放入文档
                         console.log("sdfasfdas"+data.matches.length);
                         displayErrors(data);
                         calculateScore();

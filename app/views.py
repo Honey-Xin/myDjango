@@ -48,8 +48,12 @@ class LoginView(View):
         if lpasswd != user.password:
             return HttpResponse("用户名和密码不匹配")
         a = user.username
+        #保存作者id用于后续表查询
         request.session['username'] = user.username
         request.session['userid'] = user.id
+        userid = request.session['userid']
+        author = auThor.objects.get(user_id=userid)
+        request.session['authorid'] = author.auID
 
         return render(request,'test.html',{"username":user})
 
@@ -71,7 +75,7 @@ class RegisterView(View):
                 return HttpResponse("用户已存在")
         try:
             user = User.objects.create(username=rname, password=rpasswd,email=remail)
-            auThor.objects.create(user = user)
+            auThor.objects.create(user = user, name=rname)
         except Exception as e:
             print(e)
             return HttpResponse("注册失败")
@@ -93,12 +97,6 @@ def Dom(request):
     theme = request.POST.get("theme")
     # 处理内容,先存在数据库
     try:
-        user = User.objects.get(username="1355885920@qq.com")
-        # arTicle.objects.create(arTicle_name=name,
-        #                       arTicle_theme=theme,
-        #                       arTicle_content=text,
-        #                       arTicle_score=0,
-        #                       arTicle_auThor_id=user)
         text = [i+'。' for i in text.split('。')]
         goON.texts.extend(text)
         result = goON.get_result()
@@ -137,7 +135,6 @@ def Dom(request):
 # 解析文件
 from django.conf import settings
 import time,os
-
 def upload(request):
     if request.method == 'POST' and request.FILES['file']:
         # 处理文件数据，如保存到服务器或进行其他操作
@@ -168,6 +165,26 @@ def upload(request):
     else:
         return JsonResponse({'success': False, 'message': '上传失败'})
 
+#保存信息
+def save(request):
+    text1 = request.POST.get('text1')
+    text2 = request.POST.get('text2')
+    name = request.POST.get('name')
+    theme = request.POST.get('theme')
+    auID = request.session['authorid']
+    try:
+        arTicle.objects.create(name=name,
+                           theme=theme,
+                           content1=text1,
+                           content2=text2,
+                           arTicle_auThor=auThor.objects.get(auID=auID)
+                            )
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': '上传失败'})
+
+    return JsonResponse({'text1':text1,'text2':text2,'name':name,'theme':theme})
+
+
 def user_info(request):
     userid = request.session['userid']
     # username = User.objects.get(pk=userid).
@@ -190,3 +207,7 @@ def upInfo(request):
     except Exception as e:
         return HttpResponse('保存失败')
     return redirect('info')
+
+#用户历史文稿
+def myDoc(request):
+    return render(request,'mydoc.html')
