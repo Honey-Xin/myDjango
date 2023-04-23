@@ -26,10 +26,6 @@
 .bold strong {
   font-weight: bold;
 }
-
-
-
-
 </style>
 {%endblock head%}
 {%block body%}
@@ -39,21 +35,22 @@
     <div class="row clearfix">
         <br>
         <div class="col-md-5 column">
-            <h4>输入论文</h4>
+            <h4>输入剧本</h4>
             <div class="form-group">
                 <div>
                     <input type="text" id="paper-name" class="col-md-5 column" name='title' placeholder="题目">
-                    <input type="text" id="paper-theme" class="col-md-5 column col-md-offset-2" name="theme" placeholder="题材">
+                    <input type="text" id="paper-theme" class="col-md-5 column col-md-offset-2" name="theme"
+                           placeholder="题材">
                 </div>
                 <textarea class="form-control" id="paper-input" rows="19" name></textarea>
             </div>
-            <button type="button" id="paper-submit" class="btn btn-primary">修改</button>
-<!--            上传文件-->
-            <form id="upload-form" method="post" enctype="multipart/form-data">
-              {% csrf_token %}
-              <input type="file" name="file" id="file">
-              <button type="submit" id="submit-btn">解析</button>
-            </form>
+<!--            <button type="button" id="paper-submit" class="btn btn-primary">修改</button>-->
+<!--            &lt;!&ndash;            上传文件&ndash;&gt;-->
+<!--            <form id="upload-form" method="post" enctype="multipart/form-data">-->
+<!--                {% csrf_token %}-->
+<!--                <input type="file" name="file" id="file">-->
+<!--                <button type="submit" id="submit-btn">解析</button>-->
+<!--            </form>-->
             <script>
             //上传文件
               $(document).ready(function() {
@@ -77,58 +74,22 @@
                   });
                 });
               });
+
             </script>
         </div>
-
-
-
         <div class="col-md-1 colum" id="scrollable-div">
             <h4>纠错</h4>
             <br>
             <ul id="error-list"></ul>
         </div>
-        <script>
-                document.getElementById("scrollable-div").scrollTop += 450;
-
-        </script>
-
+        <script>document.getElementById("scrollable-div").scrollTop += 450;</script>
         <div class="col-md-5 column">
-            <h4>输出论文</h4>
+            <h4>输出剧本</h4>
             <br>
             <div class="form-group">
                 <textarea class="form-control" id="paper-input-s" rows="19"></textarea>
             </div>
-            <button type="button" id="paper-submit-s" class="btn btn-primary">保存</button>
-            <script>
-                $('#paper-submit-s').click(function(event) {
-                event.preventDefault();
-                var paperInput = $('#paper-input').val();
-                var paperOutput = $('#paper-input-s').val()
-                var paperName = $('#paper-name').val()
-                var paperTheme = $('#paper-theme').val()
-                if (paperOutput === '') {
-                    alert('请输入论文内容');
-                } else {
-                    $.ajax({
-                        url: '/save',
-                        type: 'POST',
-                        dataType: 'json',
-                        data: {text1: paperInput, text2:paperOutput, name:paperName, theme:paperTheme},
-                        headers:{"X-CSRFToken":$.cookie("csrftoken")},
-                        success: function(data) {
-                        document.getElementById("paper-input").value = data.text1//纠错数据放入文档
-                        document.getElementById("paper-input-s").value = data.text1//纠错数据放入文档
-                        alter('保存成功')
-                        },
-                        error: function(xhr, status, error) {
-                            alert('发生错误：' + error);
-                        }
-                    });
-                }
-            });
-
-
-            </script>
+<!--            <button type="button" id="paper-submit-s" class="btn btn-primary">保存</button>-->
             <!-- <h2>论文得分</h2>
              <div class="form-group">
                  <label for="paper-type">论文类型:</label>
@@ -140,8 +101,53 @@
              </div>
              <h4>得分: <span id="paper-score"></span></h4>-->
         </div>
+        <div class="col-md-1 colum">
+            <br>
+            <!--            上传文件-->
+            <form id="upload-form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="file" id="file">
+                <br>
+                <button type="submit" id="submit-btn">解析</button>
+            </form>
+            <br>
+            <button type="button" id="paper-submit" class="btn btn-primary">修改</button>
+            <br>
+            <br>
+            <button type="button" id="paper-submit-s" class="btn btn-primary">保存</button>
+        </div>
     </div>
 </div>
+<script>
+$('#paper-submit-s').click(function(event) {
+event.preventDefault();
+var paperInput = $('#paper-input').val();
+var paperOutput = $('#paper-input-s').val()
+var paperName = $('#paper-name').val()
+var paperTheme = $('#paper-theme').val()
+if (paperOutput === '') {
+    alert('请输入剧本内容');
+} else {
+    $.ajax({
+        url: 'save',
+        type: 'POST',
+        dataType: 'json',
+        data: {text1: paperInput, text2:paperOutput, name:paperName, theme:paperTheme},
+        headers:{"X-CSRFToken":$.cookie("csrftoken")},
+        success: function(data) {
+            alert('保存成功')
+<!--            alert(data.text1)-->
+<!--            alert(data.text2)-->
+            document.getElementById("paper-input").value = data.text1//纠错数据放入文档
+            document.getElementById("paper-input-s").value = data.text2//纠错数据放入文档
+        },
+        error: function(xhr, status, error) {
+            alert('发生错误：' + error);
+        }
+    });
+}
+});
+</script>
 <script>
 //提交文稿
         $(document).ready(function() {
@@ -151,7 +157,7 @@
                 var paperName = $('#paper-name').val();
                 var paperTheme = $('#paper-theme').val();
                 if (paperInput === '') {
-                    alert('请输入论文内容');
+                    alert('请输入内容');
                 } else {
                     $.ajax({
                         url: '/my',
@@ -241,7 +247,5 @@
                 });
             };
         });
-
-
 </script>
 {%endblock body%}

@@ -24,11 +24,12 @@ urlpatterns = [
     # path('register',register,name='register'),
     path('registered',RegisterView.as_view(),name='registered'),
     path('logined',LoginView.as_view(),name='logined'),
-    path('test',to,name='to'),
-    path('my',Dom, name='文件处理'),
-    path('upload',upload,name='文件上传'),
+    path('test',to,name='test'),
+    path('my',Dom, name='my'),
+    path('upload',upload,name='upload'),
     path('save',save,name='save'),
     path('info',user_info,name='info'),
     path('upinfo',upInfo,name='upInfo'),
-    path('mydoc',myDoc,name='mydoc')
+    path('mydoc',myDoc,name='mydoc'),
+    path('detail/<str:pk>',detail_text,name='detail_text')
 ]

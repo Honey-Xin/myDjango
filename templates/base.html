@@ -1,85 +1,86 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
-		<link rel="stylesheet" href="{% static 'css/example.css' %}"/>
-		<link rel="stylesheet" href="{% static 'css/footer&cbl.css' %}" />
-		<link rel="stylesheet" href="{% static 'css/daohang.css' %}" />
-		<link rel="stylesheet" href="{% static 'css/base.css' %}" />
-		<script type="text/javascript" src="{% static 'js/jquery-1.11.3.js' %}" ></script>
-		<script type="text/javascript" src="{% static 'js/bootstrap.js' %}" ></script>
-		<script type="text/javascript" src="{% static 'js/hp.js' %}" ></script>
-		<script type="text/javascript" src="{% static 'js/templet.js' %}" ></script>
-		<script type="text/javascript" src="{% static 'js/jquery.cookie.js' %}" ></script>
-    	<script type="text/javascript" src="{% static 'js/popper.min.js' %}" ></script>
-		{%block head%}
-		{%endblock head%}
-		<title></title>
-	</head>
-	<body>
-	<div id="main">
-		<header  data-spy="affix" data-offset-top="70">
-			<nav class="navbar-inverse" id="daohang">
-				<div class="daohang">
-					<div class="navbar-header clearfix">
-						<button type="button" class="zd" id="zd" >
-							<span class="glyphicon glyphicon-align-justify"></span>
-						</button>
-						<a href="#" class="navbar-brand"><img src="{% static 'img/qifeiye.png' %}"></a>
-					</div>
-					<div class="collapse navbar-collapse" id="daohangtiao">
-						<ul class="nav navbar-nav">
-							<li><a href="test">首页</a></li>
-							<li><a href="templet.html">模板</a></li>
-							<li><a href="setmeal.html">套餐</a></li>
-							<li><a href="example.html">案例</a></li>
-							<li class="wd1"><a href="mydoc">文档</a></li>
-							<li class="gy1"><a href="">关于</a></li>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/example.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/footer&cbl.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/daohang.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}"/>
+    <script type="text/javascript" src="{% static 'js/jquery-1.11.3.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/hp.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/templet.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.cookie.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+    {%block head%}
+    {%endblock head%}
+    <title></title>
+</head>
+<body>
+<div id="main">
+    <header data-spy="affix" data-offset-top="70">
+        <nav class="navbar-inverse" id="daohang">
+            <div class="daohang">
+                <div class="navbar-header clearfix">
+                    <button type="button" class="zd" id="zd">
+                        <span class="glyphicon glyphicon-align-justify"></span>
+                    </button>
+                    <a href="#" class="navbar-brand"><img src="{% static 'img/qifeiye.png' %}"></a>
+                </div>
+                <div class="collapse navbar-collapse" id="daohangtiao">
+                    <ul class="nav navbar-nav">
+                        <li><a href="test">首页</a></li>
+<!--                        <li><a href="#">模板</a></li>-->
+<!--                        <li><a href="#">套餐</a></li>-->
+<!--                        <li><a href="#">案例</a></li>-->
+                        <li class="wd1"><a href="mydoc">文档</a></li>
+<!--                        <li class="gy1"><a href="#">关于</a></li>-->
 
-						</ul>
-							<li class="zcdl nav navbar-nav pull-right">
-								<div class="dropdown">
-									<a href="#" class="a1">{{username}}</a>
-									<div class="dropdown-content">
-										<a href="info" class="aa1">个人信息</a>
-<!--										<a href="info" class="aa1">个人信息</a>-->
-										<a href="logout" class="aa1">退出登录</a>
-									</div>
-								</div>
-							</li>
-					</div>
-				</div>
-		</header>
+                    </ul>
+                    <li class="zcdl nav navbar-nav pull-right">
+                        <div class="dropdown">
+                            <a href="#" class="a1">{{username}}</a>
+                            <div class="dropdown-content">
+                                <a href="info" class="aa1">个人信息</a>
+                                <a href="logout" class="aa1">退出登录</a>
+                            </div>
+                        </div>
+                    </li>
+                </div>
+            </div>
+		</nav>
+    </header>
 
-		{% block body%}
-		{% endblock body%}
+    {% block body%}
+    {% endblock body%}
 
-<!--		底页-->
-		<div class="footer">
+    <!--		底页-->
+    <div class="footer">
 
-		</div>
+    </div>
 
 
-		<ul class="cbl" >
-			<li><a href="#">
-				<div class="icon d1"><i class="i1"></i><span class="title">在线客服</span></div>
-			</a></li>
-			<i class="clearfix"></i>
-			<li><a href="#">
-				<div class="icon d2"><i class="i2"></i><span class="title">4006285729</span></div>
-			</a></li>
-			<i class="clearfix"></i>
-			<li><a  href="#">
-				<div class="icon"><i class="i3"></i><span class="title">教程中心</span></div>
-			</a></li>
-			<i class="clearfix"></i>
-			<li ><a  href="#">
-				<div class="icon d4" data-toggle="tooltip" data-placement = "left" title="<img src='img/erweima.png'><br/> 关注微信 " data-html="true"><i class="i4"></i></div>
-			</a></li>
-		</ul>
-	</div>
-	</body>
+    <!--		<ul class="cbl" >-->
+    <!--			<li><a href="#">-->
+    <!--				<div class="icon d1"><i class="i1"></i><span class="title">在线客服</span></div>-->
+    <!--			</a></li>-->
+    <!--			<i class="clearfix"></i>-->
+    <!--			<li><a href="#">-->
+    <!--				<div class="icon d2"><i class="i2"></i><span class="title">4006285729</span></div>-->
+    <!--			</a></li>-->
+    <!--			<i class="clearfix"></i>-->
+    <!--			<li><a  href="#">-->
+    <!--				<div class="icon"><i class="i3"></i><span class="title">教程中心</span></div>-->
+    <!--			</a></li>-->
+    <!--			<i class="clearfix"></i>-->
+    <!--			<li ><a  href="#">-->
+    <!--				<div class="icon d4" data-toggle="tooltip" data-placement = "left" title="<img src='img/erweima.png'><br/> 关注微信 " data-html="true"><i class="i4"></i></div>-->
+    <!--			</a></li>-->
+    <!--		</ul>-->
+</div>
+</body>
 </html>

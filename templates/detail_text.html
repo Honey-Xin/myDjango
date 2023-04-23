@@ -1,0 +1,17 @@
+{% extends 'base.html'%}
+{% load static %}
+{%block head%}
+
+{%endblock head%}
+{%block body%}
+
+<div class="container">
+    <div class="row clearfix" align="center">
+        <h2 class="h2 font-weight-600 mt-2">{{data.name}}</h2>
+        <span class="font-size-12">{{data.theme}}</span>
+        <p class="font-weight-500 lead">{{data.content}}</p>
+    </div>
+</div>
+
+
+{%endblock body%}

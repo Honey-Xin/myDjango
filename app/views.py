@@ -53,7 +53,7 @@ class LoginView(View):
         request.session['userid'] = user.id
         userid = request.session['userid']
         author = auThor.objects.get(user_id=userid)
-        request.session['authorid'] = author.auID
+        request.session['authorid'] = author.id
 
         return render(request,'test.html',{"username":user})
 
@@ -177,13 +177,11 @@ def save(request):
                            theme=theme,
                            content1=text1,
                            content2=text2,
-                           arTicle_auThor=auThor.objects.get(auID=auID)
+                           arTicle_auThor=auThor.objects.get(id=auID),
                             )
     except Exception as e:
         return JsonResponse({'success': False, 'message': '上传失败'})
-
-    return JsonResponse({'text1':text1,'text2':text2,'name':name,'theme':theme})
-
+    return JsonResponse({'text1':text1,'text2':text2,'name':name,'theme':theme,'success':True})
 
 def user_info(request):
     userid = request.session['userid']
@@ -209,5 +207,50 @@ def upInfo(request):
     return redirect('info')
 
 #用户历史文稿
+import json
 def myDoc(request):
-    return render(request,'mydoc.html')
+    articles = arTicle.objects.filter(arTicle_auThor=request.session['authorid'])
+    data = []
+    img_dict = dict()
+    # if not len(articles):
+    #     item = [{
+    #         'num': 1,
+    #         'name': '无剧本',
+    #         'theme': '无剧本',
+    #         'time': '无剧本',
+    #         'id': None
+    #     }]
+    #     imgdata = [{
+    #         '无剧本':0
+    #     }]
+    #     return render(request, 'mydoc.html', {'data': json.dumps(item), 'imgdata': json.dumps(imgdata)})
+
+    for i,ar in enumerate(articles):
+        item = {
+            'num':i,
+            'name':ar.name,
+            'theme':ar.theme,
+            'time':2023,
+            'id':ar.id
+        }
+        if ar.theme in img_dict.keys():
+            img_dict[ar.theme]+=1
+        else:
+            img_dict[ar.theme] = 1
+        data.append(item)
+    imgdata=[{'value': img_dict[key], 'name': key} for key in img_dict.keys()]
+
+    return render(request,'mydoc.html',{'data':json.dumps(data),'imgdata':json.dumps(imgdata)})
+
+
+def detail_text(request,pk):
+    try:
+        ar = arTicle.objects.get(id=pk)
+        data = {
+            'name':ar.name,
+            'theme':ar.theme,
+            'content':ar.content1
+        }
+        return render(request, 'detail_text.html',{'data':data})
+    except ValueError:
+        return redirect(pk)

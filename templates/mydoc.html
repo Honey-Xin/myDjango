@@ -1,8 +1,138 @@
 {% extends 'base.html'%}
 {% load static %}
 {%block head%}
+<script type="text/javascript" src="{% static 'js/echarts.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'js/echarts.min.js' %}"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js"></script>
+<!-- Latest compiled and minified Locales -->
+<script src="https://unpkg.com/bootstrap-table@1.21.4/dist/locale/bootstrap-table-zh-CN.min.js"></script>
 
 {%endblock head%}
 {%block body%}
+<div class="container">
+    <br>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header"><h4>剧本列表</h4></div>
+                <div class="card-body">
+                    <div class="table-demo">
+                        <table id="table"></table>
+                    </div>
+                    <script type="text/javascript">
+                    //设置需要显示的列
+                    var columns = [{
+                        field: 'num',
+                        title: '序号'
+                    }, {
+                        field: 'name',
+                        title: '剧本名'
+                    }, {
+                        field: 'theme',
+                        title: '风格'
+                    },{
+                       field:'time',
+                       title:'时间'
+                    }];
+                    //需要显示的数据
+            //bootstrap table初始化数据
+                var value = {{data | safe}};//获取后端数据
+                    $('#table').bootstrapTable({
+                        columns: columns,
+                        data: value,
+                        classes: "table table-bordered table-striped table-sm table-dark", //设置表格样式
+                       height:400,
+                      //******前端分页设置****
+                       pagination:true,
+                       pageNumber:2,
+                       pageSize:10,
+                       pageList:"[10, 20, 50, 200]",
+                       paginationHAlign:"left",
+                       paginationDetailHAlign:"right",
+                       //******前端分页设置****
+                       onPageChange:function(number, size)
+                       {
+                       },
+                       onDblClickRow:function(row, $element, field)
+                      {
+                        location.replace('detail/'+row.id);
+                      }
+                    });
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header"><h4>剧本分布</h4></div>
+                <div class="card-body">
+                    <div class="mt-3">
+                        <canvas id="pieChart" width="763" height="763"
+                                style="display: block; box-sizing: border-box; height: 400px; width: 400px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script>
+var chartDom = document.getElementById('pieChart');
+var myChart = echarts.init(chartDom);
+var option;
+
+option = {
+  tooltip: {
+    trigger: 'item'
+  },
+ legend: {
+    type: 'scroll',
+    orient: 'vertical',
+    left: 10,
+    top: 20,
+    bottom: 20,
+    textStyle:{
+      fontSize:25
+    }
+  },
+  series: [
+    {
+      name: 'Access From',
+      type: 'pie',
+      radius: ['40%', '70%'],
+      avoidLabelOverlap: false,
+      itemStyle: {
+        borderRadius: 10,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      label: {
+        show: false,
+        position: 'center'
+      },
+      emphasis: {
+        label: {
+          show: true,
+          fontSize: 40,
+          fontWeight: 'bold'
+        }
+      },
+      labelLine: {
+        show: false
+      },
+      data:{{imgdata | safe}}//获取分类数据
+    }
+  ]
+};
+
+option && myChart.setOption(option);
+
+
+
+</script>
 {%endblock body%}
